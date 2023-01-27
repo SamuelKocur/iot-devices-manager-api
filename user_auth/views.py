@@ -1,0 +1,59 @@
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.generics import GenericAPIView
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+
+from knox.auth import AuthToken
+
+from user_auth.serializers.change_password_serializer import ChangePasswordSerializer
+
+
+class LoginApiView(GenericAPIView):
+    """
+    Login user by username and password
+    """
+    serializer_class = AuthTokenSerializer
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+
+        instance, token = AuthToken.objects.create(user)
+        expiry_date = instance.expiry
+
+        return Response(
+            {
+                'user_info': {
+                    'id': user.id,
+                    'username': user.username,
+                    'email': user.email,
+                },
+                'token': token,
+                'expiry_date': expiry_date,
+            }
+        )
+
+
+class ChangePasswordApiView(GenericAPIView):
+    """
+    Change user's password.
+    Required fields: old password, password1, password2
+    """
+    serializer_class = ChangePasswordSerializer
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+
+        user = request.user
+        user.set_password(serializer.data.get("new_password"))
+        user.save()
+
+        return Response(
+            {
+                'status': 'success',
+                'message': 'Password updated successfully',
+            }
+        )

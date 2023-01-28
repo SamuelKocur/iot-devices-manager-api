@@ -25,4 +25,6 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('api/auth/', include('user_auth.urls')),
+    path('mqtt/', include('mqtt.urls')),
+    path('api/', include('iot.urls')),
 ]

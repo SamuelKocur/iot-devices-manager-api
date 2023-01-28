@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'corsheaders',
 
     'user_auth.apps.UserAuthConfig',
+    'mqtt.apps.MqttConfig',
+    'iot.apps.IotConfig'
 ]
 
 MIDDLEWARE = [
@@ -148,4 +150,5 @@ REST_KNOX = {
     # 'TOKEN_TTL': None,  # will create tokens that never expire
     'TOKEN_TTL': timedelta(days=365),
 }
+
 

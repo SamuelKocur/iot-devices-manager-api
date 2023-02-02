@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  emqx:
+    image: emqx/emqx:latest
+    ports:
+      - 1883:1883
+      - 8083:8083
+      - 8883:8883
+      - 18083:18083
+    volumes:
+      - emqx-data:/var/lib/emqx
+    environment:
+      - EMQX_NAME=emqx
+      - EMQX_HOST=emqx
+      - EMQX_NODE__NAME=emqx@127.0.0.1
+      - EMQX_ALLOW_ANONYMOUS=on
+
+volumes:
+  emqx-data:

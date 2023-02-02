@@ -53,6 +53,9 @@ INSTALLED_APPS = [
     'iot.apps.IotConfig'
 ]
 
+AUTH_USER_MODEL = 'user_auth.User'
+AUTH_GROUP_MODEL = 'user_auth.UserGroup'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -150,5 +153,3 @@ REST_KNOX = {
     # 'TOKEN_TTL': None,  # will create tokens that never expire
     'TOKEN_TTL': timedelta(days=365),
 }
-
-

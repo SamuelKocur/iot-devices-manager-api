@@ -5,8 +5,6 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 
-from .models import Messages
-
 
 class SaveIoTDataApiView(GenericAPIView):
     """
@@ -20,10 +18,10 @@ class SaveIoTDataApiView(GenericAPIView):
         topic = request_data['topic']
         message = request_data['message']
 
-        Messages.objects.create(
-            topic=topic,
-            message=message,
-        ).save()
+        # Messages.objects.create(
+        #     topic=topic,
+        #     message=message,
+        # ).save()
 
         # MqttAPI.public_message('slovakia/rabcice/test3/test', 'does it work')  # TODO - publish data to display if needed
 

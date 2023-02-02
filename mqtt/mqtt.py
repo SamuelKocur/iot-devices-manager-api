@@ -4,13 +4,13 @@ import paho.mqtt.client as mqtt
 
 import mqtt.constants as constants
 from .handler import MqttAPI
-from .topics import BASE_TOPIC
+from .topics import BASE_DATA_TOPIC
 
 
 def on_connect(mqtt_client, userdata, flags, rc):
     if rc == 0:
         print('Connected successfully')
-        mqtt_client.subscribe(BASE_TOPIC+'#')
+        mqtt_client.subscribe(BASE_DATA_TOPIC + '#')
     else:
         print('Bad connection. Code:', rc)
 

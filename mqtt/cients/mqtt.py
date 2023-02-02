@@ -3,8 +3,8 @@ import json
 import paho.mqtt.client as mqtt
 
 import mqtt.constants as constants
-from .handler import MqttAPI
-from .topics import BASE_DATA_TOPIC
+from mqtt.handlers.handler import MqttAPI
+from mqtt.topics import BASE_DATA_TOPIC
 
 
 def on_connect(mqtt_client, userdata, flags, rc):

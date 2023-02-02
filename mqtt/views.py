@@ -5,7 +5,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from mqtt.mqtt import client as mqtt_client
+from mqtt.cients.mqtt import client as mqtt_client
 
 
 class PublishApiView(GenericAPIView):

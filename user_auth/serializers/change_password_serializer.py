@@ -1,7 +1,8 @@
-from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 
 from rest_framework import serializers
+
+from user_auth.models import User
 
 
 class ChangePasswordSerializer(serializers.ModelSerializer):
@@ -13,11 +14,11 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         model = User
         fields = ('old_password', 'new_password', 'confirmed_password')
 
-    def validate(self, data):
-        if data['new_password'] != data['confirmed_password']:
+    def validate(self, attrs):
+        if attrs['new_password'] != attrs['confirmed_password']:
             raise serializers.ValidationError({"password": "Password fields didn't match."})
 
-        return data
+        return attrs
 
     def validate_old_password(self, value):
         user = self.context['request'].user

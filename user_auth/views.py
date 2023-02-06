@@ -65,13 +65,13 @@ class RegisterApiView(GenericAPIView):
 
 
 class ChangePasswordApiView(GenericAPIView):
-    """
-    Change user's password.
-    Required fields: old password, password1, password2
-    """
     serializer_class = ChangePasswordSerializer
 
     def post(self, request):
+        """
+        Change user's password.
+        Required fields: old password, password1, password2
+        """
         serializer = self.serializer_class(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
 

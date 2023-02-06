@@ -1,11 +1,15 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin, Group
+from django.utils.safestring import mark_safe
 from rangefilter.filters import DateRangeFilter
 
 from .models import FavoriteSensor, UserGroup, User, UserSensorGroup
-from django.utils.safestring import mark_safe
 
 
+admin.site.unregister(Group)
+
+
+@admin.register(UserGroup)
 class UserGroupAdmin(admin.ModelAdmin):
     model = UserGroup
 
@@ -15,6 +19,7 @@ class UserSensorGroupInLineAdmin(admin.TabularInline):
     extra = 0
 
 
+@admin.register(User)
 class CustomUserAdmin(UserAdmin):
     inlines = (UserSensorGroupInLineAdmin, )
     ordering = ('-date_created',)
@@ -57,14 +62,9 @@ class CustomUserAdmin(UserAdmin):
         return mark_safe(",  ".join([f'<span title="{group.group_name}">{group.id}</span>' for group in obj.sensor_groups.all()]))
 
 
+@admin.register(FavoriteSensor)
 class FavoriteSensorAdmin(admin.ModelAdmin):
     model = FavoriteSensor
     list_display = ('id', 'user', 'sensor')
     search_fields = ('user',)
     readonly_fields = ('date_created',)
-
-
-admin.site.unregister(Group)
-admin.site.register(UserGroup, UserGroupAdmin)
-admin.site.register(User, CustomUserAdmin)
-admin.site.register(FavoriteSensor, FavoriteSensorAdmin)

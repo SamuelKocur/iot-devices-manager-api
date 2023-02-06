@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'drf_yasg',
     'corsheaders',
     'rangefilter',
+    'import_export',
 
     'user_auth.apps.UserAuthConfig',
     'mqtt.apps.MqttConfig',

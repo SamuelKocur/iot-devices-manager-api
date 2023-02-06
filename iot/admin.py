@@ -1,8 +1,9 @@
 from django.contrib import admin
-from iot.models import Device, Sensor, SensorGroup, SensorData, Location
+from import_export.admin import ImportExportModelAdmin
 from rangefilter.filters import DateRangeFilter
 
-
+from iot_devices_manager.utils.admin_actions import ExportCsvMixin
+from iot.models import Device, Sensor, SensorGroup, SensorData, Location
 from user_auth.models import User
 
 
@@ -28,7 +29,8 @@ class SensorDataInlineAdmin(admin.TabularInline):
         return False
 
 
-class DeviceAdmin(admin.ModelAdmin):
+@admin.register(Device)
+class DeviceAdmin(ImportExportModelAdmin, admin.ModelAdmin, ExportCsvMixin):
     model = Device
     inlines = (SensorInlineAdmin, )
     list_display = ('mac', 'name', 'status', 'location', 'date_created')
@@ -36,9 +38,11 @@ class DeviceAdmin(admin.ModelAdmin):
     search_fields = ('mac', 'name', 'location',)
     readonly_fields = ('date_created', 'date_updated')
     ordering = ('-date_created',)
+    actions = ('export_as_csv',)
 
 
-class SensorAdmin(admin.ModelAdmin):
+@admin.register(Sensor)
+class SensorAdmin(ImportExportModelAdmin, admin.ModelAdmin, ExportCsvMixin):
     model = Sensor
     inlines = (SensorDataInlineAdmin,)
     list_display = ('id', 'device', 'order', 'name', 'type', 'unit', 'date_created')
@@ -46,14 +50,17 @@ class SensorAdmin(admin.ModelAdmin):
     search_fields = ('id', 'name',)
     readonly_fields = ('date_created', 'date_updated')
     ordering = ('-date_created',)
+    actions = ('export_as_csv',)
 
 
-class SensorDataAdmin(admin.ModelAdmin):
+@admin.register(SensorData)
+class SensorDataAdmin(ImportExportModelAdmin, admin.ModelAdmin, ExportCsvMixin):
     model = SensorData
     list_display = ('id', 'sensor', 'data', 'timestamp')
     list_filter = (('timestamp', DateRangeFilter), 'sensor')
     search_fields = ('sensor',)
     readonly_fields = ('id', 'sensor', 'data', 'timestamp')
+    actions = ('export_as_csv',)
 
     def has_add_permission(self, request, obj=None):
         return False
@@ -65,6 +72,7 @@ class UserInlineAdmin(admin.TabularInline):
     max_num = 10
 
 
+@admin.register(SensorGroup)
 class SensorGroupAdmin(admin.ModelAdmin):
     model = SensorGroup
     inlines = (UserInlineAdmin,)
@@ -85,6 +93,7 @@ class SensorGroupAdmin(admin.ModelAdmin):
             'fields': ('group_name', 'available_sensors')
         }),
     )
+    actions = ('export_as_csv',)
 
     def sensors(self, obj):
         # return ", ".join([str(sensor.id) for sensor in obj.available_sensors.all()])  # displays all sensor IDs
@@ -98,16 +107,11 @@ class SensorGroupAdmin(admin.ModelAdmin):
         return obj.users.all()
 
 
-class LocationAdmin(admin.ModelAdmin):
+@admin.register(Location)
+class LocationAdmin(ImportExportModelAdmin, admin.ModelAdmin, ExportCsvMixin):
     model = Location
     inlines = (DeviceInLineAdmin,)
     list_display = ('id', 'building', 'floor', 'room')
     list_filter = ('building', 'floor', 'room')
     readonly_fields = ('date_created', 'date_updated')
-
-
-admin.site.register(Device, DeviceAdmin)
-admin.site.register(Sensor, SensorAdmin)
-admin.site.register(SensorGroup, SensorGroupAdmin)
-admin.site.register(Location, LocationAdmin)
-admin.site.register(SensorData, SensorDataAdmin)
+    actions = ('export_as_csv',)

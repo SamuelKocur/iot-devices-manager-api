@@ -55,6 +55,11 @@ class SensorData(models.Model):
     data = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True, editable=False)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['timestamp', 'sensor_id'])
+        ]
+
     def __str__(self):
         return f"{self.id}"
 

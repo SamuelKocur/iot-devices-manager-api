@@ -17,7 +17,7 @@ class UserSensorGroupInLineAdmin(admin.TabularInline):
 
 class CustomUserAdmin(UserAdmin):
     inlines = (UserSensorGroupInLineAdmin, )
-    ordering = ('id', 'email',)
+    ordering = ('-date_created',)
     list_display = ('id', 'email', 'verified', 'current_sensor_groups', 'is_staff', 'is_superuser', 'date_created')
     list_filter = ('groups', 'verified', 'is_staff', 'is_superuser', ('date_created', DateRangeFilter),)
     search_fields = ('email',)

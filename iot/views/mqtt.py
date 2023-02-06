@@ -5,6 +5,7 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework import status
 
+from iot_devices_manager.utils.permisions import LocalhostOnlyPermission
 from iot.serializers.device import DeviceSerializer
 from iot.serializers.sensor_data import SensorDataRequestSerializer
 
@@ -13,7 +14,7 @@ class SaveIoTDataApiView(GenericAPIView):
     """
     REST API endpoint for saving sensor data
     """
-    permission_classes = [AllowAny]
+    permission_classes = [LocalhostOnlyPermission]
     serializer_class = SensorDataRequestSerializer
 
     def post(self, request):
@@ -32,7 +33,7 @@ class SaveIoTDeviceApiView(GenericAPIView):
     """
     REST API endpoint for saving new IoT device
     """
-    permission_classes = [AllowAny]
+    permission_classes = [LocalhostOnlyPermission]
     serializer_class = DeviceSerializer
 
     def post(self, request, **kwargs):

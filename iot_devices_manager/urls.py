@@ -7,7 +7,7 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="IoT device manager API",
+      title="IoT devices manager API",
       default_version='v1',
       description="Endpoints for IoT device manager.",
       terms_of_service="https://www.google.com/policies/terms/",
@@ -17,6 +17,8 @@ schema_view = get_schema_view(
    public=True,
    permission_classes=(permissions.AllowAny, ),
 )
+
+admin.site.site_header = 'IoT devices manager'
 
 urlpatterns = [
     path('api/swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

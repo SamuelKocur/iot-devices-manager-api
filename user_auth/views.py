@@ -4,19 +4,19 @@ from rest_framework.response import Response
 
 from knox.auth import AuthToken
 
-from user_auth.serializers.change_password_serializer import ChangePasswordSerializer
-from user_auth.serializers.auth_token_serializer import AuthTokenSerializer
-from user_auth.serializers.register_serializer import RegisterSerializer
+from user_auth.serializers.change_password import ChangePasswordSerializer
+from user_auth.serializers.auth_token import AuthTokenSerializer
+from user_auth.serializers.register import RegisterSerializer
 
 
 class LoginApiView(GenericAPIView):
-    """
-    Login user by email and password
-    """
     serializer_class = AuthTokenSerializer
     permission_classes = [AllowAny]
 
     def post(self, request):
+        """
+        Login user by email and password
+        """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
@@ -37,14 +37,14 @@ class LoginApiView(GenericAPIView):
 
 
 class RegisterApiView(GenericAPIView):
-    """
-    Register user by email, password, first name and last name
-    For passwords are required fields: password1, password2
-    """
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
 
     def post(self, request):
+        """
+        Register user by email, password, first name and last name
+        For passwords are required fields: password1, password2
+        """
         serializer = RegisterSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 

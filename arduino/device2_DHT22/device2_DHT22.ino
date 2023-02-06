@@ -23,6 +23,10 @@ String macAddress = String(WiFi.macAddress());
 const int DHTPIN = 2;
 DHT dht(DHTPIN, DHT22); //Sensor initiation
 
+unsigned long lastTime = 0;
+// Timer set to a minute (60000)
+unsigned long timerDelay = 60000;
+
 void setup() {
   Serial.begin(9600);
   Serial.println("Connecting");
@@ -81,26 +85,28 @@ void setup() {
 
 void loop() {
   client.loop();
-  float humidity = dht.readHumidity(); 
-  float temperature = dht.readTemperature(); 
-  //Check. If the reading fails, then "Read error" is displayed and the program exits
-  if (isnan(humidity) || isnan(temperature)) { 
-    Serial.println("Reading error");
-    return;
+  if ((millis() - lastTime) > timerDelay) {
+    float humidity = dht.readHumidity(); 
+    float temperature = dht.readTemperature(); 
+    //Check. If the reading fails, then "Read error" is displayed and the program exits
+    if (isnan(humidity) || isnan(temperature)) { 
+      Serial.println("Reading error");
+      return;
+    }
+
+    String tempData = getJsonData(1, temperature);
+    Serial.print("Sending temperature message to topic: ");
+    Serial.println(topic);
+    Serial.println(tempData);
+    client.publish(topic, tempData.c_str());
+
+    String humiData = getJsonData(2, humidity);
+    Serial.print("Sending humidity message to topic: ");
+    Serial.println(topic);
+    Serial.println(humiData);
+    client.publish(topic, humiData.c_str());
+    lastTime = millis();
   }
-
-  String tempData = getJsonData(1, temperature);
-  Serial.print("Sending temperature message to topic: ");
-  Serial.println(topic);
-  Serial.println(tempData);
-  client.publish(topic, tempData.c_str());
-
-  String humiData = getJsonData(2, humidity);
-  Serial.print("Sending humidity message to topic: ");
-  Serial.println(topic);
-  Serial.println(humiData);
-  client.publish(topic, humiData.c_str());
-  delay(60000);  // every minute
 }
 
 String getJsonData(int order, float data) {

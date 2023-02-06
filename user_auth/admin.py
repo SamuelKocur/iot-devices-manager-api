@@ -46,7 +46,6 @@ class CustomUserAdmin(UserAdmin):
         ('Permissions', {
             'fields': (
                 'verified', 'is_active', 'is_staff', 'is_superuser',
-                'sensor_groups'
             )
         }),
     )

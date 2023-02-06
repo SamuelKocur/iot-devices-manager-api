@@ -21,7 +21,7 @@ class Device(models.Model):
         PENDING = 'pending'
         APPROVED = 'approved'
 
-    mac = models.CharField(max_length=17, unique=True)
+    mac = models.CharField(max_length=17, primary_key=True)
     name = models.CharField(max_length=100, blank=True, null=True)
     location = models.ForeignKey('Location', on_delete=models.CASCADE, default=None, related_name='devices')
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
@@ -30,17 +30,21 @@ class Device(models.Model):
     date_updated = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
-        return f"{self.mac} [{self.id}]"
+        return f"{self.mac}"
 
 
 class Sensor(models.Model):
     device = models.ForeignKey('Device', on_delete=models.CASCADE, related_name='sensors')
+    order = models.IntegerField()
     name = models.CharField(max_length=100, blank=True, null=True)
     type = models.CharField(max_length=20)
     unit = models.CharField(max_length=10, blank=True, null=True)
 
     date_created = models.DateTimeField(auto_now_add=True, editable=False)
     date_updated = models.DateTimeField(auto_now=True, editable=False)
+
+    class Meta:
+        unique_together = ('device', 'order')
 
     def __str__(self):
         return f"{self.device} - {self.type}"
@@ -63,4 +67,4 @@ class SensorGroup(models.Model):
     date_updated = models.DateTimeField(auto_now=True, editable=False)
 
     def __str__(self):
-        return f"{self.group_name} (ID-{self.id})"
+        return f"{self.group_name} [{self.id}]"

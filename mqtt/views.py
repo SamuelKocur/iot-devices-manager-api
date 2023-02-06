@@ -5,7 +5,12 @@ from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from mqtt.cients.mqtt import client as mqtt_client
+from paho.mqtt import publish
+
+import mqtt.constants as constants
+from mqtt.cients.data_client import thread as mqtt_thread
+
+mqtt_thread.start()  # starts new thread for MQTT subscribing
 
 
 class PublishApiView(GenericAPIView):
@@ -16,8 +21,5 @@ class PublishApiView(GenericAPIView):
 
     def post(self, request):
         request_data = json.loads(request.body)
-        rc, mid = mqtt_client.publish(request_data['topic'], request_data['message'])
-        return Response(
-            rc,
-            status=status.HTTP_200_OK,
-        )
+        publish.single(request_data['topic'], request_data['message'], hostname=constants.MQTT_SERVER, port=constants.MQTT_PORT)
+        return Response(status=status.HTTP_200_OK)

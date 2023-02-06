@@ -23,7 +23,7 @@ class SensorDataInlineAdmin(admin.TabularInline):
 class DeviceAdmin(admin.ModelAdmin):
     model = Device
     inlines = (SensorInlineAdmin, )
-    list_display = ('id', 'mac', 'name', 'status', 'location', 'date_updated')
+    list_display = ('mac', 'name', 'status', 'location', 'date_updated')
     list_filter = ('location', 'status')
     search_fields = ('mac', 'name', 'location',)
     readonly_fields = ('date_created', 'date_updated')
@@ -32,9 +32,9 @@ class DeviceAdmin(admin.ModelAdmin):
 class SensorAdmin(admin.ModelAdmin):
     model = Sensor
     inlines = (SensorDataInlineAdmin,)
-    list_display = ('id', 'device', 'name', 'type')
-    list_filter = ('id', 'device', 'type', 'unit')
-    search_fields = ('name',)
+    list_display = ('id', 'device', 'name', 'type', 'unit')
+    list_filter = ('type', 'unit')
+    search_fields = ('id', 'name',)
     readonly_fields = ('date_created', 'date_updated')
 
 

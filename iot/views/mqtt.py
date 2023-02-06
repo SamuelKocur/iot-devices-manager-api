@@ -6,39 +6,37 @@ from rest_framework.permissions import AllowAny
 from rest_framework import status
 
 from iot.serializers.device import DeviceSerializer
+from iot.serializers.sensor_data import SensorDataRequestSerializer
 
 
 class SaveIoTDataApiView(GenericAPIView):
     """
-    Saves data to sensor data model
+    REST API endpoint for saving sensor data
     """
     permission_classes = [AllowAny]
+    serializer_class = SensorDataRequestSerializer
 
     def post(self, request):
-        body_decoded = str(request.body.decode('utf-8', 'ignore'))
-        request_data = json.loads(body_decoded)
-        topic = request_data['topic']
-        message = request_data['message']
+        """Saves data to DB for given sensor"""
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-        # Messages.objects.create(
-        #     topic=topic,
-        #     message=message,
-        # ).save()
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        # MqttAPI.public_message('slovakia/rabcice/test3/test', 'does it work')  # TODO - publish data to display if needed
-
-        return Response(status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SaveIoTDeviceApiView(GenericAPIView):
     """
-    Saves devices to Device model
+    REST API endpoint for saving new IoT device
     """
     permission_classes = [AllowAny]
     serializer_class = DeviceSerializer
 
     def post(self, request, **kwargs):
-        """Create a new device"""
+        """Creates a new device"""
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 

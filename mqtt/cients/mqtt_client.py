@@ -4,15 +4,15 @@ import threading
 import paho.mqtt.client as mqtt
 
 import mqtt.constants as constants
-from mqtt.handlers.data_handler import MqttAPI
-from mqtt.topics import BASE_DATA_TOPIC
+from mqtt.handlers.mqtt_handler import MqttAPI
+from mqtt.topics import BASE_DATA_TOPIC, BASE_SETUP_TOPIC
 
 
 def on_connect(client, userdata, flags, rc):
     if rc == 0:
-        topic = BASE_DATA_TOPIC + '#'
-        print(f'Connected successfully to MQTT Broker - subscribing {topic}')
-        client.subscribe(topic)
+        print(f'Connected successfully to MQTT Broker - subscribing {BASE_DATA_TOPIC}, {BASE_SETUP_TOPIC}')
+        client.subscribe(BASE_DATA_TOPIC + '#')
+        client.subscribe(BASE_SETUP_TOPIC + '#')
     else:
         print('Bad connection. Code:', rc)
 

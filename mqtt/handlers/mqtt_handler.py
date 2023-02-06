@@ -4,6 +4,8 @@ import json
 from rest_framework import status
 from rest_framework.response import Response
 
+from mqtt.topics import BASE_DATA_TOPIC, BASE_SETUP_TOPIC
+
 
 class MqttAPI:
     base_url = 'http://127.0.0.1:8000/'
@@ -12,7 +14,8 @@ class MqttAPI:
 
     @staticmethod
     def send_request(url, data):
-        response = requests.request("POST", url, data=json.dumps(data))
+        headers = {'Content-type': 'application/json'}
+        response = requests.request("POST", url, data=json.dumps(data), headers=headers)
 
         if response.status_code == 200:
             return Response(status=status.HTTP_200_OK)
@@ -21,13 +24,8 @@ class MqttAPI:
 
     @staticmethod
     def handle_message(topic, message):
-        url = MqttAPI.base_api_url + 'mqtt/save-data/'
-        payload = {
-            'topic': topic,
-            'message': message,
-        }
-
-        MqttAPI.send_request(url, payload)
+        url = MqttAPI.get_url(topic)
+        MqttAPI.send_request(url, message)
 
     @staticmethod
     def public_message(topic, message):
@@ -39,3 +37,10 @@ class MqttAPI:
 
         MqttAPI.send_request(url, payload)
 
+    @staticmethod
+    def get_url(topic):
+        url = MqttAPI.base_api_url
+        if str(topic).startswith(BASE_SETUP_TOPIC):
+            return url + 'mqtt/save-device/'
+        else:
+            return url + 'mqtt/save-data/'

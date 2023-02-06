@@ -47,7 +47,7 @@ class Sensor(models.Model):
         unique_together = ('device', 'order')
 
     def __str__(self):
-        return f"{self.device} - {self.type}"
+        return f"{self.device} - {self.order} [{self.type}]"
 
 
 class SensorData(models.Model):
@@ -56,7 +56,7 @@ class SensorData(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True, editable=False)
 
     def __str__(self):
-        return f"{self.sensor}: {self.data} {self.timestamp} (ID-{self.id})"
+        return f"{self.id}"
 
 
 class SensorGroup(models.Model):

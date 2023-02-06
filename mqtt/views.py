@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from paho.mqtt import publish
 
 import mqtt.constants as constants
-from mqtt.cients.data_client import thread as mqtt_thread
+from mqtt.cients.mqtt_client import thread as mqtt_thread
 
 mqtt_thread.start()  # starts new thread for MQTT subscribing
 

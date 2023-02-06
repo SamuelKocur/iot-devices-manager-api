@@ -1,7 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin, Group
+from rangefilter.filters import DateRangeFilter
 
 from .models import FavoriteSensor, UserGroup, User, UserSensorGroup
+from django.utils.safestring import mark_safe
 
 
 class UserGroupAdmin(admin.ModelAdmin):
@@ -16,8 +18,8 @@ class UserSensorGroupInLineAdmin(admin.TabularInline):
 class CustomUserAdmin(UserAdmin):
     inlines = (UserSensorGroupInLineAdmin, )
     ordering = ('id', 'email',)
-    list_display = ('id', 'email', 'verified', 'current_sensor_groups', 'is_staff', 'is_superuser')
-    list_filter = ('groups', 'verified', 'is_staff', 'is_superuser')
+    list_display = ('id', 'email', 'verified', 'current_sensor_groups', 'is_staff', 'is_superuser', 'date_created')
+    list_filter = ('groups', 'verified', 'is_staff', 'is_superuser', ('date_created', DateRangeFilter),)
     search_fields = ('email',)
     readonly_fields = ('date_created', 'date_updated')
     fieldsets = (
@@ -51,7 +53,8 @@ class CustomUserAdmin(UserAdmin):
     )
 
     def current_sensor_groups(self, obj):
-        return ",  ".join([str(group.group_name) for group in obj.sensor_groups.all()])
+        # return mark_safe("""<b title="aaa">a</b>, <b title="aaa">a</b>, <b title="aaa">a</b>, """)
+        return mark_safe(",  ".join([f'<span title="{group.group_name}">{group.id}</span>' for group in obj.sensor_groups.all()]))
 
 
 class FavoriteSensorAdmin(admin.ModelAdmin):

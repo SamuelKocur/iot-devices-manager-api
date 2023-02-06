@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'knox',
     'drf_yasg',
     'corsheaders',
+    'rangefilter',
 
     'user_auth.apps.UserAuthConfig',
     'mqtt.apps.MqttConfig',

@@ -1,5 +1,3 @@
-from abc import ABC
-
 from rest_framework import serializers
 
 from iot.models import Device, Sensor, Location
@@ -70,6 +68,12 @@ class LocationSerializer(serializers.Serializer):
     building = serializers.CharField()
     floor = serializers.IntegerField()
     room = serializers.CharField()
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass
 
 
 class DeviceSerializer(serializers.ModelSerializer):

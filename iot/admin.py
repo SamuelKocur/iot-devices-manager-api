@@ -21,6 +21,7 @@ class SensorInlineAdmin(admin.TabularInline):
 
 class SensorDataInlineAdmin(admin.TabularInline):
     model = SensorData
+    ordering = ('-timestamp',)
     readonly_fields = ('sensor', 'data', 'timestamp')
     list_filter = (('timestamp', DateRangeFilter),)
     extra = 1
@@ -32,12 +33,12 @@ class SensorDataInlineAdmin(admin.TabularInline):
 @admin.register(Device)
 class DeviceAdmin(ImportExportModelAdmin, admin.ModelAdmin, ExportCsvMixin):
     model = Device
+    ordering = ('-date_created',)
     inlines = (SensorInlineAdmin, )
     list_display = ('mac', 'name', 'status', 'location', 'date_created')
     list_filter = (('date_created', DateRangeFilter), 'status', 'location')
     search_fields = ('mac', 'name', 'location',)
     readonly_fields = ('date_created', 'date_updated')
-    ordering = ('-date_created',)
     actions = ('export_as_csv',)
 
 
@@ -56,6 +57,7 @@ class SensorAdmin(ImportExportModelAdmin, admin.ModelAdmin, ExportCsvMixin):
 @admin.register(SensorData)
 class SensorDataAdmin(ImportExportModelAdmin, admin.ModelAdmin, ExportCsvMixin):
     model = SensorData
+    ordering = ('-timestamp',)
     list_display = ('id', 'sensor', 'data', 'timestamp')
     list_filter = (('timestamp', DateRangeFilter), 'sensor')
     search_fields = ('sensor',)

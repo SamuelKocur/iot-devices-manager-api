@@ -6,7 +6,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework import status
 
 from iot_devices_manager.utils.permisions import LocalhostOnlyPermission
-from iot.serializers.device import DeviceSerializer
+from iot.serializers.device import DeviceDetailSerializer
 from iot.serializers.sensor_data import SensorDataRequestSerializer
 
 
@@ -34,7 +34,7 @@ class SaveIoTDeviceApiView(GenericAPIView):
     REST API endpoint for saving new IoT device
     """
     permission_classes = [LocalhostOnlyPermission]
-    serializer_class = DeviceSerializer
+    serializer_class = DeviceDetailSerializer
 
     def post(self, request, **kwargs):
         """Creates a new device"""

@@ -47,7 +47,7 @@ class Sensor(models.Model):
         unique_together = ('device', 'order')
 
     def __str__(self):
-        return f"{self.device} - {self.order} [{self.type}]"
+        return f"{self.id} [{self.type}]"
 
 
 class SensorData(models.Model):

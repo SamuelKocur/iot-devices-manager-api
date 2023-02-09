@@ -2,25 +2,28 @@ from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView, get_object_or_404
 
 from iot.models import Device
-from iot.serializers.device import DeviceSerializer
+from iot.serializers.device import DeviceDetailSerializer
+from iot_devices_manager.utils.permisions import LocalhostOnlyPermission
 
 
 class DeviceListView(GenericAPIView):
-    serializer_class = DeviceSerializer
+    serializer_class = DeviceDetailSerializer
+    permission_classes = [LocalhostOnlyPermission]
 
     def get(self, request):
-        """Retrieve all devices"""
-        device = Device.objects.all()[:20]
-        serializer = self.serializer_class(device, many=True, context={'user_id': request.user.id})
-        device = {"devices": serializer.data}
-        return Response(device)
+        """Retrieves all devices"""
+        devices = Device.objects.all()[:20]
+        serializer = self.serializer_class(devices, many=True)
+        devices = {"devices": serializer.data}
+        return Response(devices)
 
 
 class DeviceDetailView(GenericAPIView):
-    serializer_class = DeviceSerializer
+    serializer_class = DeviceDetailSerializer
+    permission_classes = [LocalhostOnlyPermission]
 
     def get(self, request, device_id):
-        """Retrieve device by id"""
-        recipe = get_object_or_404(Device, pk=device_id)
-        serializer = self.serializer_class(recipe)
+        """Retrieves device by id"""
+        device = get_object_or_404(Device, pk=device_id)
+        serializer = self.serializer_class(device)
         return Response(serializer.data)

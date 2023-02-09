@@ -1,28 +1,15 @@
-import json
-
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-import rest_framework.serializers as serializers
 
 from paho.mqtt import publish
 
 import mqtt.constants as constants
 from mqtt.cients.mqtt_client import thread as mqtt_thread
+from mqtt.publisher.serializer import PublishApiSerializer
 
 mqtt_thread.start()  # starts new thread for MQTT subscribing
-
-
-class PublishApiSerializer(serializers.Serializer):
-    topic = serializers.CharField()
-    message = serializers.CharField()
-
-    def update(self, instance, validated_data):
-        pass
-
-    def create(self, validated_data):
-        pass
 
 
 class PublishApiView(GenericAPIView):

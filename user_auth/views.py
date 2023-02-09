@@ -29,6 +29,7 @@ class LoginApiView(GenericAPIView):
                 'user_info': {
                     'id': user.id,
                     'email': user.email,
+                    'full_name': user.first_name + ' ' + user.last_name
                 },
                 'token': token,
                 'expiry_date': expiry_date,
@@ -57,6 +58,7 @@ class RegisterApiView(GenericAPIView):
                 'user_info': {
                     'id': user.id,
                     'email': user.email,
+                    'full_name': user.first_name + ' ' + user.last_name
                 },
                 'token': token,
                 'expiry_date': expiry_date,

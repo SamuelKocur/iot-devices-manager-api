@@ -30,3 +30,10 @@ class ModelListSerializer(serializers.ListSerializer):
                 model.delete()
 
         return ret
+
+
+class StringListSerializer(serializers.ListSerializer):
+    child = serializers.CharField()
+
+    def update(self, instance, validated_data):
+        pass

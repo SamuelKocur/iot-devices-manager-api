@@ -13,9 +13,16 @@ class SensorListView(GenericAPIView):
     serializer_class = SensorDetailSerializer
 
     def get(self, request):
-        """Retrieves all available sensors for given user"""
+        """
+        Retrieves all available sensors for given user.
+        It is possible to filter those sensors by type.
+        """
         available_sensors = get_available_sensor_ids(request.user)
-        sensors = Sensor.objects.filter(id__in=available_sensors, device__status=Device.Status.APPROVED)
+        sensor_type = request.query_params.get("type")
+        if sensor_type:
+            sensors = Sensor.objects.filter(id__in=available_sensors, device__status=Device.Status.APPROVED, type=sensor_type)
+        else:
+            sensors = Sensor.objects.filter(id__in=available_sensors, device__status=Device.Status.APPROVED)
         serializer = self.serializer_class(sensors, many=True, context={'user_id': request.user.id})
         sensors = {"sensors": serializer.data}
         return Response(sensors)

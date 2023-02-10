@@ -45,7 +45,7 @@ class DeviceAdmin(ImportExportModelAdmin, admin.ModelAdmin, ExportCsvMixin):
 @admin.register(Sensor)
 class SensorAdmin(ImportExportModelAdmin, admin.ModelAdmin, ExportCsvMixin):
     model = Sensor
-    inlines = (SensorDataInlineAdmin,)
+    # inlines = (SensorDataInlineAdmin,)
     list_display = ('id', 'device', 'order', 'name', 'type', 'unit', 'date_created')
     list_filter = (('date_created', DateRangeFilter), 'type', 'unit')
     search_fields = ('id', 'name',)

@@ -5,6 +5,7 @@ class Location(models.Model):
     building = models.CharField(max_length=20)
     floor = models.CharField(max_length=20)
     room = models.CharField(max_length=20)
+    name = models.CharField(max_length=30, null=True)  # field used in mobile app, if not specified by admin it is null - for the app value will be combination of building, floor and room
 
     date_created = models.DateTimeField(auto_now_add=True, editable=False)
     date_updated = models.DateTimeField(auto_now=True, editable=False)

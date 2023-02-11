@@ -6,6 +6,13 @@ class LocationSerializer(serializers.Serializer):
     building = serializers.CharField()
     floor = serializers.IntegerField()
     room = serializers.CharField()
+    name = serializers.SerializerMethodField()
+
+    def get_name(self, obj):
+        if obj.name:
+            return obj.name
+
+        return obj.building + obj.floor + obj.room
 
     def update(self, instance, validated_data):
         pass

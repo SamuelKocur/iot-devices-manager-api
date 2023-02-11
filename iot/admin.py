@@ -113,7 +113,7 @@ class SensorGroupAdmin(admin.ModelAdmin):
 class LocationAdmin(ImportExportModelAdmin, admin.ModelAdmin, ExportCsvMixin):
     model = Location
     inlines = (DeviceInLineAdmin,)
-    list_display = ('id', 'building', 'floor', 'room')
+    list_display = ('id', 'building', 'floor', 'room', 'name')
     list_filter = ('building', 'floor', 'room')
     readonly_fields = ('date_created', 'date_updated')
     actions = ('export_as_csv',)

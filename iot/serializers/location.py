@@ -4,7 +4,7 @@ from rest_framework import serializers
 class LocationSerializer(serializers.Serializer):
     id = serializers.IntegerField(required=False)
     building = serializers.CharField()
-    floor = serializers.IntegerField()
+    floor = serializers.CharField()
     room = serializers.CharField()
     name = serializers.SerializerMethodField()
 

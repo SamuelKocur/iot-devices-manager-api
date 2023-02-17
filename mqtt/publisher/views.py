@@ -1,3 +1,5 @@
+import sys
+
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
@@ -6,10 +8,11 @@ from rest_framework.response import Response
 from paho.mqtt import publish
 
 import mqtt.constants as constants
-from mqtt.cients.mqtt_client import thread as mqtt_thread
+from mqtt.clients.mqtt_client import thread as mqtt_thread
 from mqtt.publisher.serializer import PublishApiSerializer
 
-mqtt_thread.start()  # starts new thread for MQTT subscribing
+if 'runserver' in sys.argv:
+    mqtt_thread.start()  # starts new thread for MQTT subscribing
 
 
 class PublishApiView(GenericAPIView):

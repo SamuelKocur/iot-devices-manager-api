@@ -3,6 +3,7 @@
 # Byte-compiled / optimized / DLL files
 .idea
 .pyc
+.venv
 
 __pycache__/
 *.py[cod]

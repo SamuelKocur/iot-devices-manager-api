@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.shortcuts import get_object_or_404
 
 from iot.models import Device, Sensor, SensorData
 
@@ -26,7 +27,8 @@ class SensorDataRequestSerializer(serializers.ModelSerializer):
         if not order:
             raise serializers.ValidationError({'order': 'This field is required'})
 
-        sensor = Sensor.objects.get(
+        sensor = get_object_or_404(
+            Sensor,
             device__mac__exact=mac,
             order=order,
         )

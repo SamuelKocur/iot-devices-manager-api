@@ -37,3 +37,8 @@ class StringListSerializer(serializers.ListSerializer):
 
     def update(self, instance, validated_data):
         pass
+
+
+class EmptySerializer(serializers.Serializer):
+    pass
+

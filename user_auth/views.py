@@ -4,6 +4,7 @@ from rest_framework.response import Response
 
 from knox.auth import AuthToken
 
+from iot_devices_manager.utils.serializers import EmptySerializer
 from user_auth.serializers.change_password import ChangePasswordSerializer
 from user_auth.serializers.auth_token import AuthTokenSerializer
 from user_auth.serializers.register import RegisterSerializer
@@ -90,8 +91,10 @@ class ChangePasswordApiView(GenericAPIView):
 
 
 class CheckTokenView(GenericAPIView):
+    serializer_class = EmptySerializer
+
     def get(self, request):
         """
-        Checks if token is valid
+        Check if token is valid
         """
         return Response({'valid': True})

@@ -14,7 +14,7 @@ class SensorListView(GenericAPIView):
 
     def get(self, request):
         """
-        Retrieves all available sensors for given user.
+        Retrieve all available sensors for given user.
         It is possible to filter those sensors by type.
         """
         available_sensors = get_available_sensor_ids(request.user)

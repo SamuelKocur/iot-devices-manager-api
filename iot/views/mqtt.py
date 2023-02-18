@@ -18,7 +18,7 @@ class SaveIoTDataApiView(GenericAPIView):
     serializer_class = SensorDataRequestSerializer
 
     def post(self, request):
-        """Saves data to DB for given sensor"""
+        """Save data to DB for given sensor"""
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -37,7 +37,7 @@ class SaveIoTDeviceApiView(GenericAPIView):
     serializer_class = DeviceDetailSerializer
 
     def post(self, request, **kwargs):
-        """Creates a new device"""
+        """Create a new device"""
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 

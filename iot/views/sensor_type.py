@@ -11,7 +11,7 @@ class SensorTypesView(GenericAPIView):
     permission_classes = [LocalhostOnlyPermission]
 
     def get(self, request):
-        """Retrieves all sensor types"""
+        """Retrieve all sensor types"""
         sensor_types = Sensor.objects.values_list('type', flat=True).distinct()
         serializer = self.serializer_class(sensor_types)
         types = {"sensor_types": serializer.data}

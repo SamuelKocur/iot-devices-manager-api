@@ -11,7 +11,7 @@ class DeviceListView(GenericAPIView):
     permission_classes = [LocalhostOnlyPermission]
 
     def get(self, request):
-        """Retrieves all devices"""
+        """Retrieve all devices"""
         devices = Device.objects.all()[:20]
         serializer = self.serializer_class(devices, many=True)
         devices = {"devices": serializer.data}
@@ -23,7 +23,7 @@ class DeviceDetailView(GenericAPIView):
     permission_classes = [LocalhostOnlyPermission]
 
     def get(self, request, device_id):
-        """Retrieves device by id"""
+        """Retrieve device by id"""
         device = get_object_or_404(Device, pk=device_id)
         serializer = self.serializer_class(device)
         return Response(serializer.data)

@@ -14,3 +14,7 @@ from django.core.wsgi import get_wsgi_application
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'iot_devices_manager.settings')
 
 application = get_wsgi_application()
+
+# from mqtt.clients.mqtt_client import thread as mqtt_thread
+#
+# mqtt_thread.start()

@@ -40,7 +40,7 @@ class UserSensorGroup(models.Model):
 
 
 class FavoriteSensor(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='favorite_sensors')
     sensor = models.ForeignKey('iot.Sensor', on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True, editable=False)
 

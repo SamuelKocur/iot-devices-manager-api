@@ -1,5 +1,5 @@
 from rest_framework.response import Response
-from rest_framework.generics import GenericAPIView, get_object_or_404
+from rest_framework.generics import GenericAPIView
 
 from iot.models import Location, SensorGroup
 from iot.serializers.location import LocationSerializer

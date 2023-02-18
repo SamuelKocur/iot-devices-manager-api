@@ -87,3 +87,11 @@ class ChangePasswordApiView(GenericAPIView):
                 'message': 'Password updated successfully',
             }
         )
+
+
+class CheckTokenView(GenericAPIView):
+    def get(self, request):
+        """
+        Checks if token is valid
+        """
+        return Response({'valid': True})

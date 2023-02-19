@@ -6,6 +6,7 @@ from iot_devices_manager.utils.serializers import EmptySerializer
 from user_auth.models import FavoriteSensor
 from iot.models import Sensor
 from iot.serializers.sensor import SensorDetailSerializer
+from iot.utils.permission_checks import get_available_sensor_ids
 
 
 class FavoriteSensorsListView(GenericAPIView):
@@ -26,10 +27,11 @@ class ToggleFavoriteView(GenericAPIView):
 
     def post(self, request, sensor_id):
         """
-        Save or remove sensor to favorites.
+        Save or remove sensor to/from favorites.
         """
+        available_sensors = get_available_sensor_ids(request.user)
         user_id = request.user.id
-        get_object_or_404(Sensor, pk=sensor_id)
+        get_object_or_404(Sensor, pk=sensor_id, id__in=available_sensors)
 
         try:
             saved_sensor = FavoriteSensor.objects.get(user_id=user_id, sensor_id=sensor_id)

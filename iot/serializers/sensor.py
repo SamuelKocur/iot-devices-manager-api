@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from iot.models import Device, Sensor, Location
+from iot.models import Device, Sensor, SensorData
 from iot_devices_manager.utils.serializers import ModelListSerializer
 from user_auth.models import FavoriteSensor
 
@@ -28,6 +28,7 @@ class SensorDetailSerializer(serializers.ModelSerializer):
     date_created = serializers.DateTimeField(required=False)
     is_favorite = serializers.SerializerMethodField()
     device = DeviceSerializer()
+    latest_value = serializers.SerializerMethodField()
 
     class Meta:
         list_serializer_class = ModelListSerializer
@@ -41,6 +42,7 @@ class SensorDetailSerializer(serializers.ModelSerializer):
             'date_created',
             'date_updated',
             'is_favorite',
+            'latest_value',
             'device',
         )
 
@@ -55,6 +57,9 @@ class SensorDetailSerializer(serializers.ModelSerializer):
             return True
         return False
 
-    def create(self, validated_data, **kwargs):
-        return Sensor.objects.create(device=kwargs.get('device'), **validated_data)
-
+    def get_latest_value(self, obj):
+        sensor_data = SensorData.objects.filter(sensor_id=obj.id).latest('timestamp')
+        return {
+            'value': sensor_data.data,
+            'timestamp': sensor_data.timestamp,
+        }

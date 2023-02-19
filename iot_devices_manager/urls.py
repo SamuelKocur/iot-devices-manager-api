@@ -29,6 +29,7 @@ urlpatterns = [
     path('api/auth/', include('user_auth.urls')),
     path('api/mqtt/', include('mqtt.urls')),
     path('api/', include('iot.urls')),
+    path('api/data-warehouse/', include('data_warehouse.urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

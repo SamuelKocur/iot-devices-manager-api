@@ -1,12 +1,9 @@
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView, get_object_or_404
 
-from iot.models import Device, Sensor, SensorGroup
+from iot.models import Device, Sensor
 from iot.serializers.sensor import SensorDetailSerializer
-
-
-def get_available_sensor_ids(user):
-    return SensorGroup.objects.filter(users=user).values_list('available_sensors__id')
+from iot.utils.permission_checks import get_available_sensor_ids
 
 
 class SensorListView(GenericAPIView):
@@ -15,7 +12,7 @@ class SensorListView(GenericAPIView):
     def get(self, request):
         """
         Retrieve all available sensors for given user.
-        It is possible to filter those sensors by type.
+        It is possible to filter those sensors by parameter type.
         """
         available_sensors = get_available_sensor_ids(request.user)
         sensor_type = request.query_params.get("type")

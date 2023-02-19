@@ -63,3 +63,14 @@ class SensorDetailSerializer(serializers.ModelSerializer):
             'value': sensor_data.data,
             'timestamp': sensor_data.timestamp,
         }
+
+
+class LocationSensorSerializer(serializers.Serializer):
+    location = LocationSerializer()
+    sensors = SensorDetailSerializer(many=True)
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass

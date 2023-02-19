@@ -11,7 +11,7 @@ class LocationSerializer(serializers.Serializer):
     room = serializers.CharField()
     name = serializers.SerializerMethodField()
     image = serializers.ImageField(required=False)
-    device_count = serializers.SerializerMethodField()
+    number_of_devices = serializers.SerializerMethodField()
 
     def get_name(self, obj):
         if obj.name:
@@ -19,8 +19,8 @@ class LocationSerializer(serializers.Serializer):
 
         return obj.building + obj.floor + obj.room
 
-    def get_device_count(self, obj):
-        user = self.context.get("user")
+    def get_number_of_devices(self, obj):
+        user = self.context.get("user_id")
         available_sensors = get_available_sensor_ids(user)
         sensors = Sensor.objects.filter(id__in=available_sensors, device__location_id=obj.id)
         return sensors.count()

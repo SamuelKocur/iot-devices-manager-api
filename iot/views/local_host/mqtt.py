@@ -1,10 +1,9 @@
-import json
 from rest_framework.response import Response
 
 from rest_framework.generics import GenericAPIView
 from rest_framework import status
 
-from iot_devices_manager.utils.permisions import LocalhostOnlyPermission
+from iot_devices_manager.utils.permissions import LocalhostOnlyPermission
 from iot.serializers.device import DeviceDetailSerializer
 from iot.serializers.sensor_data import SensorDataRequestSerializer
 

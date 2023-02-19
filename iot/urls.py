@@ -12,6 +12,8 @@ urlpatterns = [
     path('sensors/<int:sensor_id>/toggle-favorite/', favorite_sensors.ToggleFavoriteView().as_view(), name="toggle_favorite"),
 
     path('locations/', location.LocationListView().as_view(), name="all_locations"),
+    path('locations/<int:location_id>/', location.LocationDetailView().as_view(), name="single_location"),
+
     path('sensor-types/', sensor_type.SensorTypesView().as_view(), name="sensor_types"),
 
     path('mqtt/save-data/', mqtt.SaveIoTDataApiView.as_view(), name='save-mqtt-data'),

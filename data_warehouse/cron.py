@@ -28,7 +28,7 @@ def add_data_to_warehouse():
     list_date_info = [
         DateInfo.get_date_info(row['hour']) for row in last_day_data
     ]
-    date_info_instances = DateInfo.objects.bulk_create(list_date_info, ignore_conflicts=True)
+    DateInfo.objects.bulk_create(list_date_info, ignore_conflicts=True)
 
     # Create list of fact_sensor_data objects and insert them to DB using bulk_create()
     list_fact_sensor_data = [

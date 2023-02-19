@@ -165,5 +165,5 @@ REST_KNOX = {
 
 # https://gutsytechster.wordpress.com/2019/06/24/how-to-setup-a-cron-job-in-django/
 CRONJOBS = [
-    ('50 16 * * *', 'data_warehouse.cron.add_data_to_warehouse')  # TODO set for midnight and 10 minutes
+    ('1 0 * * *', 'data_warehouse.cron.add_data_to_warehouse')
 ]

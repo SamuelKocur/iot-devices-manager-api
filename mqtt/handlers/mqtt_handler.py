@@ -4,13 +4,13 @@ import json
 from rest_framework import status
 from rest_framework.response import Response
 
+from iot_devices_manager.settings import LOOKBACK_URL
 from mqtt.topics import BASE_DATA_TOPIC, BASE_SETUP_TOPIC
 
 
 class MqttAPI:
-    base_url = 'http://127.0.0.1:8000/'
-    base_api_url = base_url + 'api/'
-    base_mqtt_url = base_url + 'mqtt/'
+    lookback_api_url = LOOKBACK_URL + 'api/'
+    lookback_mqtt_url = LOOKBACK_URL + 'mqtt/'
 
     @staticmethod
     def send_request(url, data):
@@ -29,7 +29,7 @@ class MqttAPI:
 
     @staticmethod
     def public_message(topic, message):
-        url = MqttAPI.base_mqtt_url + 'publish/'
+        url = MqttAPI.lookback_mqtt_url + 'publish/'
         payload = {
             'topic': topic,
             'message': message,
@@ -39,7 +39,7 @@ class MqttAPI:
 
     @staticmethod
     def get_url(topic):
-        url = MqttAPI.base_api_url
+        url = MqttAPI.lookback_api_url
         if str(topic).startswith(BASE_SETUP_TOPIC):
             return url + 'mqtt/save-device/'
         else:

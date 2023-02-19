@@ -31,6 +31,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+LOOKBACK_URL = 'http://127.0.0.1:80/'
+
 
 # Application definition
 

@@ -116,4 +116,12 @@ class LocationAdmin(ImportExportModelAdmin, admin.ModelAdmin, ExportCsvMixin):
     list_display = ('id', 'building', 'floor', 'room', 'name')
     list_filter = ('building', 'floor', 'room')
     readonly_fields = ('date_created', 'date_updated')
+    fieldsets = (
+        (None, {
+            'fields': ('building', 'floor', 'room', 'date_created', 'date_updated')
+        }),
+        ('Mobile app', {
+            'fields': ('name', 'image')
+        }),
+    )
     actions = ('export_as_csv',)

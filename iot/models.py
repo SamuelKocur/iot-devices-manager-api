@@ -62,6 +62,7 @@ class SensorData(models.Model):
         indexes = [
             models.Index(fields=['timestamp', 'sensor_id'])
         ]
+        verbose_name_plural = 'Sensor data'
 
     def __str__(self):
         return f"{self.id}"

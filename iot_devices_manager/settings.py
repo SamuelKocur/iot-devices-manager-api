@@ -49,10 +49,13 @@ INSTALLED_APPS = [
     'corsheaders',
     'rangefilter',
     'import_export',
+    'django_crontab',
+    'django_extensions',
 
     'user_auth.apps.UserAuthConfig',
     'mqtt.apps.MqttConfig',
-    'iot.apps.IotConfig'
+    'iot.apps.IotConfig',
+    'data_warehouse.apps.DataWarehouseConfig'
 ]
 
 AUTH_USER_MODEL = 'user_auth.User'
@@ -159,3 +162,8 @@ REST_KNOX = {
     # 'TOKEN_TTL': None,  # will create tokens that never expire
     'TOKEN_TTL': timedelta(days=365),
 }
+
+# https://gutsytechster.wordpress.com/2019/06/24/how-to-setup-a-cron-job-in-django/
+CRONJOBS = [
+    ('50 16 * * *', 'data_warehouse.cron.add_data_to_warehouse')  # TODO set for midnight and 10 minutes
+]

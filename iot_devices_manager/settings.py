@@ -171,7 +171,7 @@ LOGGING = {
     'handlers': {
         'file': {
             'class': 'logging.FileHandler',
-            'filename': os.path.join(MEDIA_ROOT, 'django.log'),
+            'filename': os.path.join(BASE_DIR, 'logs', 'debug.log'),
         },
     },
     'loggers': {

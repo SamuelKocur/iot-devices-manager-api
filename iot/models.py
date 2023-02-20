@@ -14,6 +14,7 @@ class Location(models.Model):
 
     class Meta:
         unique_together = ('building', 'floor', 'room')
+        ordering = ('-date_updated',)
 
     def __str__(self):
         return f"B-{self.building} F-{self.floor} R-{self.room} [{self.id}]"
@@ -48,6 +49,7 @@ class Sensor(models.Model):
 
     class Meta:
         unique_together = ('device', 'order')
+        ordering = ('-date_updated',)
 
     def __str__(self):
         return f"{self.id} [{self.type}]"

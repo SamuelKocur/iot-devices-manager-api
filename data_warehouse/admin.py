@@ -45,7 +45,7 @@ class DateInfoAdmin(admin.ModelAdmin):
 class FactSensorDataAdmin(ImportExportModelAdmin, admin.ModelAdmin, ExportCsvMixin):
     model = FactSensorData
     ordering = ('-date',)
-    list_display = ('id', 'sensor', 'date', 'avg_value')
+    list_display = ('id', 'sensor', 'date', 'avg_value', 'min_value', 'max_value')
     list_filter = (('date', DateRangeFilter), 'sensor')
     search_fields = ('sensor',)
     actions = ('export_as_csv',)

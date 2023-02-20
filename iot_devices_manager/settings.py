@@ -31,7 +31,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-LOOKBACK_URL = 'http://127.0.0.1:80/'
+LOOKBACK_URL = 'http://127.0.0.1:8000/'
 
 
 # Application definition
@@ -145,6 +145,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+LOG_URL = 'logs/'
+LOG_ROOT = os.path.join(BASE_DIR, 'logs')  # should be somewhere else
+
+if not os.path.exists(LOG_ROOT):
+    # If it does not exist, create it
+    os.makedirs(LOG_ROOT)
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
@@ -155,9 +162,19 @@ REST_FRAMEWORK = {
         'knox.auth.TokenAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAdminUser',
     ],
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+}
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'api_key': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    },
 }
 
 REST_KNOX = {
@@ -171,7 +188,7 @@ LOGGING = {
     'handlers': {
         'file': {
             'class': 'logging.FileHandler',
-            'filename': os.path.join(BASE_DIR, 'logs', 'debug.log'),
+            'filename': os.path.join(LOG_ROOT, 'debug.log'),
         },
     },
     'loggers': {

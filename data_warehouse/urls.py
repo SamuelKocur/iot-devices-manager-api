@@ -1,7 +1,9 @@
-from django.urls import path
+from django.urls import path, include
 
-from data_warehouse.views import FilterDataListView
+import data_warehouse.views as view
 
 urlpatterns = [
-    path('filter/', FilterDataListView.as_view(), name="filtered_sensor_data"),
+    path('filter/', view.FilterDataListView.as_view(), name="filtered_sensor_data"),
+
+    path('', include('data_warehouse.cron.urls'))
 ]

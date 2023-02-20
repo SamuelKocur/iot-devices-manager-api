@@ -165,7 +165,24 @@ REST_KNOX = {
     'TOKEN_TTL': timedelta(days=365),
 }
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(MEDIA_ROOT, 'django.log'),
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['file'],
+            'level': 'INFO',
+        },
+    },
+}
+
 # https://gutsytechster.wordpress.com/2019/06/24/how-to-setup-a-cron-job-in-django/
 CRONJOBS = [
-    ('1 0 * * *', 'data_warehouse.cron.add_data_to_warehouse')
+    ('1 0 * * *', 'data_warehouse.cron.jobs.call_recalculation_endpoint')
 ]

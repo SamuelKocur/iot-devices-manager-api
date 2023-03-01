@@ -32,5 +32,5 @@ class SensorDetailView(GenericAPIView):
         """Retrieves sensor by id for given user"""
         available_sensors = get_available_sensor_ids(request.user)
         sensor = get_object_or_404(Sensor, pk=sensor_id, id__in=available_sensors, device__status=Device.Status.APPROVED)
-        serializer = self.serializer_class(sensor)
+        serializer = self.serializer_class(sensor, context={'user_id': request.user.id})
         return Response(serializer.data)

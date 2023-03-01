@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView, get_object_or_404
 
-from iot.models import Location, Sensor
+from iot.models import Location, Sensor, Device
 from iot.serializers.sensor import LocationSensorSerializer
 from iot.serializers.location import LocationSerializer
 from iot.utils.permission_checks import get_available_location_ids, get_available_sensor_ids
@@ -12,8 +12,8 @@ class LocationListView(GenericAPIView):
 
     def get(self, request):
         """Retrieve all locations"""
-        # available_locations = get_available_location_ids(request.user)
-        locations = Location.objects.all()
+        available_locations = get_available_location_ids(request.user)
+        locations = Location.objects.filter(id__in=available_locations)
         serializer = self.serializer_class(locations, many=True, context={'user_id': request.user.id})
         locations = {"locations": serializer.data}
         return Response(locations)

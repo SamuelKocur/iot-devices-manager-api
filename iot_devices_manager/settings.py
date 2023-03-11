@@ -201,5 +201,5 @@ LOGGING = {
 
 # https://gutsytechster.wordpress.com/2019/06/24/how-to-setup-a-cron-job-in-django/
 CRONJOBS = [
-    ('1 0 * * *', 'data_warehouse.cron.jobs.call_recalculation_endpoint')
+    ('1 */1 * * *', 'data_warehouse.cron.jobs.call_recalculation_endpoint')
 ]

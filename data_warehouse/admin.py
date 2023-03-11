@@ -3,6 +3,7 @@ from import_export.admin import ImportExportModelAdmin
 from rangefilter.filters import DateRangeFilter
 
 from data_warehouse.models import DateInfo, FactSensorData
+from data_warehouse.cron.models import CronJobLastRun
 from iot_devices_manager.utils.admin_actions import ExportCsvMixin
 
 
@@ -44,9 +45,17 @@ class DateInfoAdmin(admin.ModelAdmin):
 @admin.register(FactSensorData)
 class FactSensorDataAdmin(ImportExportModelAdmin, admin.ModelAdmin, ExportCsvMixin):
     model = FactSensorData
-    ordering = ('-date',)
-    list_display = ('id', 'sensor', 'date', 'tag', 'avg_value', 'min_value', 'max_value')
+    ordering = ('-date__date',)
+    list_display = ('id', 'sensor', 'date', 'tag', 'avg_value', 'min_value', 'max_value', 'total_value')
     list_filter = (('date', DateRangeFilter), 'tag', 'sensor')
     search_fields = ('sensor',)
     actions = ('export_as_csv',)
 
+
+@admin.register(CronJobLastRun)
+class CronJobLastRunAdmin(admin.ModelAdmin):
+    model = CronJobLastRun
+    list_display = ('last_run',)
+    list_filter = (('last_run', DateRangeFilter),)
+    # readonly_fields = ('last_run',)
+    ordering = ('-last_run',)

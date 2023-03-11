@@ -1,14 +1,18 @@
+import pytz
 from django.utils.dateparse import parse_datetime
 
 from data_warehouse.constants import MIN_NUMBER_OF_DATA
 from data_warehouse.models import FactSensorData
-from data_warehouse.serializers import FilterDataRequestSerializer, FilterDataResponseSerializer
+from iot_devices_manager.settings import TIME_ZONE
 
 
-def filter_data(request: FilterDataRequestSerializer):
+def filter_data(request):
     sensor_id = request['sensor_id']
     date_from = parse_datetime(request['date_from'])
     date_to = parse_datetime(request['date_to'])
+    # timezone = pytz.timezone(TIME_ZONE)
+    # date_from = timezone.localize(date_from)
+    # date_to = timezone.localize(date_to)
     tag = get_filtering_tag(date_from, date_to)
     filtered_data = FactSensorData.objects.filter(
         sensor_id=sensor_id,

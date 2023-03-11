@@ -1,22 +1,34 @@
 import logging
 
-from datetime import timedelta
+from datetime import timedelta, timezone
 
 from django.db import transaction
 from django.db.models import Avg, Max, Min, Sum
+from django.utils import timezone
 from rest_framework import status
 
 from iot.models import SensorData
+from data_warehouse.cron.models import CronJobLastRun
 from data_warehouse.models import DateInfo, FactSensorData
 
 logger = logging.getLogger(__name__)
 
 
-# Recalculates collected data from all sensors on hourly basis
+def recalculate_collected_date():
+    now = timezone.now()
+    last_run = CronJobLastRun.objects.last().last_run
+
+    while last_run.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1) != now.replace(minute=0, second=0, microsecond=0):  # if some data are missing
+        last_run += timedelta(hours=1)
+        recalculate_collected_data_hourly(last_run)
+
+    recalculate_collected_data_hourly(now)
+
+
+# Recalculates collected data from all sensors for hour specified by parameter datetime
 def recalculate_collected_data_hourly(datetime):
     start_of_previous_hour = datetime.replace(minute=0, second=0, microsecond=0) - timedelta(hours=1)
-    start_of_next_hour = start_of_previous_hour + timedelta(hours=1)
-    end_of_previous_hour = start_of_next_hour - timedelta(seconds=1)
+    end_of_previous_hour = start_of_previous_hour + timedelta(hours=1) - timedelta(seconds=1)
 
     if FactSensorData.objects.filter(
         date__date__gte=start_of_previous_hour,
@@ -41,7 +53,7 @@ def recalculate_collected_data_hourly(datetime):
         )
 
         logger.info('Creating date info model instance')
-        date_info = DateInfo.objects.create(date=start_of_previous_hour)
+        date_info, _ = DateInfo.objects.get_or_create(date=start_of_previous_hour)
 
         logger.info('Creating fact sensor data model instances')
         create_fact_sensor_data(
@@ -50,7 +62,12 @@ def recalculate_collected_data_hourly(datetime):
             tag=FactSensorData.Tag.HOUR,
         )
 
-        return recalculate_daily_data(datetime)
+        recalculation_status = recalculate_daily_data(datetime)
+
+    if recalculation_status == status.HTTP_200_OK:
+        CronJobLastRun.objects.create(last_run=start_of_previous_hour)
+
+    return recalculation_status
 
 
 def recalculate_daily_data(datetime):
@@ -102,8 +119,9 @@ def recalculate_weekly_data(datetime):
         total_value=Sum('total_value'),
     )
 
-    start_of_week = datetime.date() - timedelta(days=datetime.date().weekday())
-    date_info, _ = DateInfo.objects.get_or_create(date=datetime.replace(day=start_of_week.day, hour=0, minute=0, second=0, microsecond=0))
+    start_of_week = datetime - timedelta(days=datetime.date().weekday())
+    print(start_of_week)
+    date_info, _ = DateInfo.objects.get_or_create(date=start_of_week.replace(hour=0, minute=0, second=0, microsecond=0))
 
     logger.info('Creating fact sensor data model instance for weekly data')
     FactSensorData.objects.filter(

@@ -1,10 +1,7 @@
-from datetime import timedelta
-
-from django.utils import timezone
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 
-from data_warehouse.cron.recalculations import recalculate_collected_data_hourly
+from data_warehouse.cron.recalculations import recalculate_collected_date
 from iot_devices_manager.utils.permissions import LocalhostOnlyPermission
 from iot_devices_manager.utils.serializers import EmptySerializer
 
@@ -17,5 +14,5 @@ class HourlyRecalculationView(GenericAPIView):
         """
         Used with cron to recalculated collected data
         """
-        status = recalculate_collected_data_hourly(timezone.now())
+        status = recalculate_collected_date()
         return Response(status=status)

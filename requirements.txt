@@ -12,4 +12,5 @@ import_export==0.3.1
 knox==0.1.14
 paho_mqtt==1.6.1
 Pillow==9.4.0
+python-dateutil==2.8.2
 requests==2.22.0

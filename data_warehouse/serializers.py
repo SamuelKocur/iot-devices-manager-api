@@ -1,17 +1,18 @@
 from rest_framework import serializers
 
 from data_warehouse.models import FactSensorData
-from iot.models import SensorData
 
 
-class FilterDataRequestSerializer(serializers.ModelSerializer):
+class FilterDataRequestSerializer(serializers.Serializer):
     sensor_id = serializers.IntegerField()
     date_from = serializers.DateTimeField()
     date_to = serializers.DateTimeField()
 
-    class Meta:
-        model = SensorData
-        fields = '__all__'
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass
 
 
 class FilterDataResponseSerializer(serializers.ModelSerializer):
@@ -23,5 +24,5 @@ class FilterDataResponseSerializer(serializers.ModelSerializer):
     total_value = serializers.FloatField(required=False)
 
     class Meta:
-        model = SensorData
+        model = FactSensorData
         fields = '__all__'

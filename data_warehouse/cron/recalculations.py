@@ -7,18 +7,26 @@ from django.db.models import Avg, Max, Min, Sum
 from django.utils import timezone
 from rest_framework import status
 
-from iot.models import SensorData
 from data_warehouse.cron.models import CronJobLastRun
 from data_warehouse.models import DateInfo, FactSensorData
+from iot.models import SensorData
+
 
 logger = logging.getLogger(__name__)
 
 
 def recalculate_collected_date():
     now = timezone.now()
-    last_run = CronJobLastRun.objects.last().last_run
+    cron_model = CronJobLastRun.objects.last()
 
-    while last_run.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1) != now.replace(minute=0, second=0, microsecond=0):  # if some data are missing
+    if cron_model is None:
+        first_data = SensorData.objects.order_by('timestamp').first()
+        cron_model = CronJobLastRun.objects.create(last_run=first_data.timestamp)
+
+    last_run = cron_model.last_run
+
+    while last_run.replace(minute=0, second=0, microsecond=0) + timedelta(hours=1) != now.replace(minute=0, second=0, microsecond=0)\
+            and last_run < now:  # if some data are missing
         last_run += timedelta(hours=1)
         recalculate_collected_data_hourly(last_run)
 
@@ -62,10 +70,12 @@ def recalculate_collected_data_hourly(datetime):
             tag=FactSensorData.Tag.HOUR,
         )
 
-        recalculation_status = recalculate_daily_data(datetime)
+        recalculation_status = recalculate_daily_data(end_of_previous_hour)
 
     if recalculation_status == status.HTTP_200_OK:
-        CronJobLastRun.objects.create(last_run=start_of_previous_hour)
+        cron_model = CronJobLastRun.objects.last()
+        cron_model.last_run = datetime
+        cron_model.save()
 
     return recalculation_status
 
@@ -98,7 +108,7 @@ def recalculate_daily_data(datetime):
     create_fact_sensor_data(
         data=last_day_hourly_data,
         date_info=date_info,
-        tag=FactSensorData.Tag.DAY,
+        tag='day',
     )
 
     return recalculate_weekly_data(datetime)
@@ -120,7 +130,6 @@ def recalculate_weekly_data(datetime):
     )
 
     start_of_week = datetime - timedelta(days=datetime.date().weekday())
-    print(start_of_week)
     date_info, _ = DateInfo.objects.get_or_create(date=start_of_week.replace(hour=0, minute=0, second=0, microsecond=0))
 
     logger.info('Creating fact sensor data model instance for weekly data')

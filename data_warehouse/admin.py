@@ -26,7 +26,7 @@ class FactSensorDataInlineAdmin(admin.TabularInline):
 class DateInfoAdmin(admin.ModelAdmin):
     model = DateInfo
     inlines = (FactSensorDataInlineAdmin,)
-    list_display = ('date', 'hour', 'day', 'month', 'year')
+    list_display = ('id', 'date', 'hour', 'day', 'month', 'year')
     list_filter = (('date', DateRangeFilter),)
     search_fields = ('date',)
     readonly_fields = (
@@ -47,8 +47,8 @@ class FactSensorDataAdmin(ImportExportModelAdmin, admin.ModelAdmin, ExportCsvMix
     model = FactSensorData
     ordering = ('-date__date',)
     list_display = ('id', 'sensor', 'date', 'tag', 'avg_value', 'min_value', 'max_value', 'total_value')
-    list_filter = (('date', DateRangeFilter), 'tag', 'sensor')
-    search_fields = ('sensor',)
+    list_filter = (('date__date', DateRangeFilter), 'tag', 'sensor')
+    search_fields = ('id',)
     actions = ('export_as_csv',)
 
 

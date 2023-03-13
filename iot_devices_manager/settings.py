@@ -78,7 +78,7 @@ ROOT_URLCONF = 'iot_devices_manager.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'iot_devices_manager/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -96,6 +96,8 @@ WSGI_APPLICATION = 'iot_devices_manager.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
+
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 2000
 
 DATABASES = {
     'default': {

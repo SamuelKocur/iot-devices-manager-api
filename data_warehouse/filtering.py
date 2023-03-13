@@ -1,26 +1,24 @@
-import pytz
 from django.utils.dateparse import parse_datetime
 
 from data_warehouse.constants import MIN_NUMBER_OF_DATA
 from data_warehouse.models import FactSensorData
-from iot_devices_manager.settings import TIME_ZONE
 
 
 def filter_data(request):
     sensor_id = request['sensor_id']
     date_from = parse_datetime(request['date_from'])
     date_to = parse_datetime(request['date_to'])
-    # timezone = pytz.timezone(TIME_ZONE)
-    # date_from = timezone.localize(date_from)
-    # date_to = timezone.localize(date_to)
+
     tag = get_filtering_tag(date_from, date_to)
+    date_format = get_date_format(tag)
     filtered_data = FactSensorData.objects.filter(
         sensor_id=sensor_id,
         date__date__gte=date_from,
         date__date__lte=date_to,
         tag=tag,
-    )
-    return filtered_data
+    ).order_by('date')
+
+    return filtered_data, date_format
 
 
 def get_filtering_tag(date_from, date_to):
@@ -40,3 +38,12 @@ def get_filtering_tag(date_from, date_to):
         return FactSensorData.Tag.DAY
     else:
         return FactSensorData.Tag.HOUR
+
+
+def get_date_format(tag):
+    if tag == FactSensorData.Tag.HOUR:
+        return 'd MMM y H:mm'
+    elif tag == FactSensorData.Tag.MONTH:
+        return 'MMM y'
+
+    return 'd MMM y'

@@ -17,12 +17,22 @@ class FilterDataRequestSerializer(serializers.Serializer):
 
 class FilterDataResponseSerializer(serializers.ModelSerializer):
     sensor_id = serializers.IntegerField()
-    date = serializers.DateTimeField()
-    avg_value = serializers.FloatField(required=False)
-    min_value = serializers.FloatField(required=False)
-    max_value = serializers.FloatField(required=False)
-    total_value = serializers.FloatField(required=False)
+    date = serializers.SerializerMethodField()
+    avg_value = serializers.DecimalField(required=False, max_digits=7, decimal_places=2)
+    min_value = serializers.DecimalField(required=False, max_digits=7, decimal_places=2)
+    max_value = serializers.DecimalField(required=False, max_digits=7, decimal_places=2)
+    total_value = serializers.DecimalField(required=False, max_digits=28, decimal_places=2)
 
     class Meta:
         model = FactSensorData
-        fields = '__all__'
+        fields = (
+            'sensor_id',
+            'date',
+            'avg_value',
+            'min_value',
+            'max_value',
+            'total_value',
+        )
+
+    def get_date(self, obj):
+        return obj.date.date

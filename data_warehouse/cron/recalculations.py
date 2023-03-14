@@ -118,7 +118,6 @@ def recalculate_weekly_data(datetime):
     last_week_daily_data = FactSensorData.objects.filter(
         tag=FactSensorData.Tag.DAY,
         date__week=datetime.isocalendar()[1],
-        date__month=datetime.month,
         date__year=datetime.year,
     ).values(
         'sensor'
@@ -135,7 +134,6 @@ def recalculate_weekly_data(datetime):
     logger.info('Creating fact sensor data model instance for weekly data')
     FactSensorData.objects.filter(
         date__week=datetime.isocalendar()[1],
-        date__month=datetime.month,
         date__year=datetime.year,
         tag=FactSensorData.Tag.WEEK,
     ).delete()

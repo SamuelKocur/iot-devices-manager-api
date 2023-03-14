@@ -58,11 +58,14 @@ class SensorDetailSerializer(serializers.ModelSerializer):
         return False
 
     def get_latest_value(self, obj):
-        sensor_data = SensorData.objects.filter(sensor_id=obj.id).latest('timestamp')
-        return {
-            'value': sensor_data.data,
-            'timestamp': sensor_data.timestamp,
-        }
+        try:
+            sensor_data = SensorData.objects.filter(sensor_id=obj.id).latest('timestamp')
+            return {
+                'value': sensor_data.data,
+                'timestamp': sensor_data.timestamp,
+            }
+        except SensorData.DoesNotExist:
+            return
 
 
 class LocationSensorSerializer(serializers.Serializer):

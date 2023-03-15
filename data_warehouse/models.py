@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class DateInfo(models.Model):
@@ -28,7 +29,7 @@ class DateInfo(models.Model):
         super(DateInfo, self).save(*args, **kwargs)
 
     def __str__(self):
-        return str(self.date)
+        return str(timezone.localtime(self.date))
 
 
 class FactSensorData(models.Model):

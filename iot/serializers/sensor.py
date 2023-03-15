@@ -1,10 +1,10 @@
+from django.utils import timezone
 from rest_framework import serializers
 
 from iot.models import Device, Sensor, SensorData
+from iot.serializers.location import LocationSerializer
 from iot_devices_manager.utils.serializers import ModelListSerializer
 from user_auth.models import FavoriteSensor
-
-from iot.serializers.location import LocationSerializer
 
 
 class DeviceSerializer(serializers.ModelSerializer):
@@ -62,7 +62,7 @@ class SensorDetailSerializer(serializers.ModelSerializer):
             sensor_data = SensorData.objects.filter(sensor_id=obj.id).latest('timestamp')
             return {
                 'value': sensor_data.data,
-                'timestamp': sensor_data.timestamp,
+                'timestamp': timezone.localtime(sensor_data.timestamp),
             }
         except SensorData.DoesNotExist:
             return

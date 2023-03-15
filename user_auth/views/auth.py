@@ -29,7 +29,8 @@ class LoginApiView(GenericAPIView):
                 'user_info': {
                     'id': user.id,
                     'email': user.email,
-                    'full_name': user.first_name + ' ' + user.last_name
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
                 },
                 'token': token,
                 'expiry_date': expiry_date,
@@ -58,10 +59,30 @@ class RegisterApiView(GenericAPIView):
                 'user_info': {
                     'id': user.id,
                     'email': user.email,
-                    'full_name': user.first_name + ' ' + user.last_name
+                    'first_name': user.first_name,
+                    'last_name': user.last_name,
                 },
                 'token': token,
                 'expiry_date': expiry_date,
+            }
+        )
+
+
+class DeleteUserApiView(GenericAPIView):
+    serializer_class = EmptySerializer
+
+    def delete(self, request):
+        """
+        Soft delete user account
+        """
+        user = request.user
+        user.is_active = False
+        user.save()
+
+        return Response(
+            {
+                'status': 'success',
+                'message': 'Profile deleted successfully',
             }
         )
 

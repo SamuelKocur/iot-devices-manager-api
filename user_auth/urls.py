@@ -13,6 +13,7 @@ urlpatterns = [
 
     path('change-password/', profile_update_views.ChangePasswordApiView.as_view(), name="change-password"),
     path('update-profile/', profile_update_views.UpdateUserProfileApiView.as_view(), name="update-profile"),
+    path('delete-account/', auth_views.DeleteUserApiView.as_view(), name="update-profile"),
 
     path('validate-token/', auth_views.CheckTokenView.as_view(), name='check-token-validity')
 ]

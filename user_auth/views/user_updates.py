@@ -31,9 +31,9 @@ class ChangePasswordApiView(GenericAPIView):
 class UpdateUserProfileApiView(GenericAPIView):
     serializer_class = UpdateUserProfileSerializer
 
-    def post(self, request):
+    def put(self, request):
         """
-        Applies updates to user's profile
+        Apply updates to user's profile
         """
         instance = request.user
         serializer = self.serializer_class(instance, data=request.data)

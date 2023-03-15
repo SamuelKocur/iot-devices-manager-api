@@ -5,7 +5,6 @@ from rest_framework.response import Response
 from knox.auth import AuthToken
 
 from iot_devices_manager.utils.serializers import EmptySerializer
-from user_auth.serializers.change_password import ChangePasswordSerializer
 from user_auth.serializers.auth_token import AuthTokenSerializer
 from user_auth.serializers.register import RegisterSerializer
 
@@ -63,29 +62,6 @@ class RegisterApiView(GenericAPIView):
                 },
                 'token': token,
                 'expiry_date': expiry_date,
-            }
-        )
-
-
-class ChangePasswordApiView(GenericAPIView):
-    serializer_class = ChangePasswordSerializer
-
-    def post(self, request):
-        """
-        Change user's password.
-        Required fields: old password, password1, password2
-        """
-        serializer = self.serializer_class(data=request.data, context={'request': request})
-        serializer.is_valid(raise_exception=True)
-
-        user = request.user
-        user.set_password(serializer.data.get("new_password"))
-        user.save()
-
-        return Response(
-            {
-                'status': 'success',
-                'message': 'Password updated successfully',
             }
         )
 

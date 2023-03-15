@@ -2,15 +2,17 @@ from django.urls import path
 from knox import views as knox_views
 
 
-from . import views
+import user_auth.views.user_updates as profile_update_views
+import user_auth.views.auth as auth_views
 
 urlpatterns = [
-    path('login/', views.LoginApiView.as_view(), name="login"),
-    path('register/', views.RegisterApiView.as_view(), name="register"),
-    path('change-password', views.ChangePasswordApiView.as_view(), name="change-password"),
+    path('login/', auth_views.LoginApiView.as_view(), name="login"),
+    path('register/', auth_views.RegisterApiView.as_view(), name="register"),
+    path('logout/', knox_views.LogoutView.as_view(), name="logout"),
+    path('logout-all/', knox_views.LogoutAllView.as_view(), name="logout-from-all-devices"),
 
-    path('logout/', knox_views.LogoutView.as_view()),
-    path('logout-all/', knox_views.LogoutAllView.as_view()),
+    path('change-password/', profile_update_views.ChangePasswordApiView.as_view(), name="change-password"),
+    path('update-profile/', profile_update_views.UpdateUserProfileApiView.as_view(), name="update-profile"),
 
-    path('validate-token/', views.CheckTokenView.as_view(), name='check-token-validity')
+    path('validate-token/', auth_views.CheckTokenView.as_view(), name='check-token-validity')
 ]

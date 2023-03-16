@@ -22,7 +22,7 @@ class DeviceSerializer(serializers.ModelSerializer):
 class SensorDetailSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
     order = serializers.CharField()
-    name = serializers.CharField(required=False)
+    name = serializers.SerializerMethodField()
     custom_name = serializers.SerializerMethodField()
     unit = serializers.CharField(required=False)
     date_updated = serializers.DateTimeField(required=False)
@@ -59,11 +59,17 @@ class SensorDetailSerializer(serializers.ModelSerializer):
             return True
         return False
 
+    def get_name(self, obj):
+        if obj.name:
+            return obj.name
+
+        return obj.type
+
     def get_custom_name(self, obj):
         user_id = self.context.get("user_id")
         custom_names = obj.user_names.filter(user__id=user_id)
         if len(custom_names) == 0:
-            return obj.name
+            return self.get_name(obj)
 
         return custom_names.first().name
 

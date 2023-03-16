@@ -3,8 +3,8 @@ from rest_framework.generics import get_object_or_404, GenericAPIView
 from rest_framework.response import Response
 
 from iot_devices_manager.utils.serializers import EmptySerializer
-from user_auth.models import FavoriteSensor
-from iot.models import Sensor
+from iot.models.user_customization import FavoriteSensor
+from iot.models.iot_device import Sensor
 from iot.serializers.sensor import SensorDetailSerializer
 from iot.utils.permission_checks import get_available_sensor_ids
 

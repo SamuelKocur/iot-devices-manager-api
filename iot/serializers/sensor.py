@@ -1,10 +1,10 @@
 from django.utils import timezone
 from rest_framework import serializers
 
-from iot.models import Device, Sensor, SensorData
+from iot.models.iot_device import Device, Sensor, SensorData
 from iot.serializers.location import LocationSerializer
 from iot_devices_manager.utils.serializers import ModelListSerializer
-from user_auth.models import FavoriteSensor
+from iot.models.user_customization import FavoriteSensor
 
 
 class DeviceSerializer(serializers.ModelSerializer):
@@ -23,6 +23,7 @@ class SensorDetailSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
     order = serializers.CharField()
     name = serializers.CharField(required=False)
+    custom_name = serializers.SerializerMethodField()
     unit = serializers.CharField(required=False)
     date_updated = serializers.DateTimeField(required=False)
     date_created = serializers.DateTimeField(required=False)
@@ -37,6 +38,7 @@ class SensorDetailSerializer(serializers.ModelSerializer):
             'id',
             'order',
             'name',
+            'custom_name',
             'type',
             'unit',
             'date_created',
@@ -56,6 +58,14 @@ class SensorDetailSerializer(serializers.ModelSerializer):
 
             return True
         return False
+
+    def get_custom_name(self, obj):
+        user_id = self.context.get("user_id")
+        custom_names = obj.user_names.filter(user__id=user_id)
+        if len(custom_names) == 0:
+            return obj.name
+
+        return custom_names.first().name
 
     def get_latest_value(self, obj):
         try:

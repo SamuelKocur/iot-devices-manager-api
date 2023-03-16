@@ -1,4 +1,4 @@
-from iot.models import SensorGroup, Device
+from iot.models.iot_device import SensorGroup, Device
 
 
 def get_available_sensor_ids(user):

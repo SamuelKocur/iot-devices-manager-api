@@ -9,7 +9,7 @@ from rest_framework import status
 
 from data_warehouse.cron.models import CronJobLastRun
 from data_warehouse.models import DateInfo, FactSensorData
-from iot.models import SensorData
+from iot.models.iot_device import SensorData
 
 
 logger = logging.getLogger(__name__)

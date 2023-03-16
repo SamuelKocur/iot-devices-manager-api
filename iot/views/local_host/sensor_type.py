@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView
 
-from iot.models import Sensor
+from iot.models.iot_device import Sensor
 from iot_devices_manager.utils.permissions import LocalhostOnlyPermission
 from iot_devices_manager.utils.serializers import StringListSerializer
 

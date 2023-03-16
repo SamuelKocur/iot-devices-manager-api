@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from iot.models import Device, Sensor, Location
+from iot.models.iot_device import Device, Sensor, Location
 from iot_devices_manager.utils.serializers import ModelListSerializer
 
 from iot.serializers.location import LocationSerializer

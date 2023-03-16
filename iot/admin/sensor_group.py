@@ -1,7 +1,7 @@
 from django.contrib import admin
 from rangefilter.filters import DateRangeFilter
 
-from iot.models import SensorGroup
+from iot.models.iot_device import SensorGroup
 from user_auth.models import User
 
 

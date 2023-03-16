@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView, get_object_or_404
 
-from iot.models import Location, Sensor, Device
+from iot.models.iot_device import Location, Sensor, Device
 from iot.serializers.sensor import LocationSensorSerializer
 from iot.serializers.location import LocationSerializer
 from iot.utils.permission_checks import get_available_location_ids, get_available_sensor_ids

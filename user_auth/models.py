@@ -1,5 +1,4 @@
 from django.contrib.auth.models import AbstractUser, Group
-from django.conf import settings
 from django.db import models
 
 from user_auth.managers import UserManager
@@ -37,13 +36,3 @@ class UserSensorGroup(models.Model):
         db_table = 'user_sensor_groups'
         verbose_name = 'User sensor group'
         verbose_name_plural = 'User sensor groups'
-
-
-class FavoriteSensor(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='favorite_sensors')
-    sensor = models.ForeignKey('iot.Sensor', on_delete=models.CASCADE)
-    date_created = models.DateTimeField(auto_now_add=True, editable=False)
-
-    class Meta:
-        unique_together = ('user', 'sensor',)
-        ordering = ['-date_created']

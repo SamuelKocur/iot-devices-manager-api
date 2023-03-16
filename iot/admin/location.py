@@ -2,7 +2,7 @@ from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
 
 from iot_devices_manager.utils.admin_actions import ExportCsvMixin
-from iot.models import Device, Location
+from iot.models.iot_device import Device, Location
 
 
 class DeviceInLineAdmin(admin.TabularInline):

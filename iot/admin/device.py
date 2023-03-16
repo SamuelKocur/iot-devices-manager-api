@@ -3,7 +3,7 @@ from import_export.admin import ImportExportModelAdmin
 from rangefilter.filters import DateRangeFilter
 
 from iot_devices_manager.utils.admin_actions import ExportCsvMixin
-from iot.models import Device, Sensor
+from iot.models.iot_device import Device, Sensor
 
 
 class SensorInlineAdmin(admin.TabularInline):

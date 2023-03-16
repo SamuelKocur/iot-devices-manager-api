@@ -3,7 +3,7 @@ from django.contrib.auth.admin import UserAdmin, Group
 from django.utils.safestring import mark_safe
 from rangefilter.filters import DateRangeFilter
 
-from .models import FavoriteSensor, UserGroup, User, UserSensorGroup
+from .models import UserGroup, User, UserSensorGroup
 
 
 admin.site.unregister(Group)
@@ -60,11 +60,3 @@ class CustomUserAdmin(UserAdmin):
     def current_sensor_groups(self, obj):
         # return mark_safe("""<b title="aaa">a</b>, <b title="aaa">a</b>, <b title="aaa">a</b>, """)
         return mark_safe(",  ".join([f'<span title="{group.group_name}">{group.id}</span>' for group in obj.sensor_groups.all()]))
-
-
-@admin.register(FavoriteSensor)
-class FavoriteSensorAdmin(admin.ModelAdmin):
-    model = FavoriteSensor
-    list_display = ('id', 'user', 'sensor')
-    search_fields = ('user',)
-    readonly_fields = ('date_created',)

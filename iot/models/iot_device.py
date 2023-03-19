@@ -22,6 +22,7 @@ class Location(models.Model):
 
 class Device(models.Model):
     class Status(models.TextChoices):
+        REJECTED = 'rejected'
         PENDING = 'pending'
         APPROVED = 'approved'
 

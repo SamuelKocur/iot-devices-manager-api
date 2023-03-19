@@ -29,7 +29,7 @@ urlpatterns = [
     path('json/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
 
     path('admin/', admin.site.urls),
-    path('api/auth/', include('user_auth.urls')),
+    path('api/user/', include('user_auth.urls')),
     path('api/mqtt/', include('mqtt.urls')),
     path('api/', include('iot.urls')),
     path('api/data-warehouse/', include('data_warehouse.urls')),

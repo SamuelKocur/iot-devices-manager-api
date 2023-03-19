@@ -31,8 +31,6 @@ class UserSettingsRequestSerializer(serializers.ModelSerializer):
             user=user,
         )
 
-        print(validated_data)
-
         app_setting.date_format = validated_data['date_format']
         app_setting.get_data_for = validated_data['get_data_for']
         app_setting.graph_animate = validated_data['graph_animate']

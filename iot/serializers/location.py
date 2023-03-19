@@ -31,7 +31,6 @@ class LocationSerializer(serializers.Serializer):
 
     def get_number_of_devices(self, obj):
         user = self.context.get("user")
-        print(user)
         available_sensors = get_available_sensor_ids(user)
         sensors = Sensor.objects.filter(id__in=available_sensors, device__location_id=obj.id)
         return sensors.count()

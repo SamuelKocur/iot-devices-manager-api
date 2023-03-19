@@ -25,10 +25,10 @@ class UserSettingsRequestSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        user_id = self.context.get("user_id")
+        user = self.context.get("user")
 
         app_setting, _ = UserAppSettings.objects.get_or_create(
-            user_id=user_id,
+            user=user,
         )
 
         print(validated_data)

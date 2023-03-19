@@ -66,8 +66,7 @@ class UserAppSettingsView(GenericAPIView):
         """
         Save app settings for given user.
         """
-        user_id = request.user.id
-        serializer = UserSettingsRequestSerializer(data=request.data, context={'user_id': user_id})
+        serializer = UserSettingsRequestSerializer(data=request.data, context={'user': request.user})
         serializer.is_valid(raise_exception=True)
         serializer.save()
 

@@ -20,7 +20,7 @@ class SensorListView(GenericAPIView):
             sensors = Sensor.objects.filter(id__in=available_sensors, device__status=Device.Status.APPROVED, type=sensor_type)
         else:
             sensors = Sensor.objects.filter(id__in=available_sensors, device__status=Device.Status.APPROVED)
-        serializer = self.serializer_class(sensors, many=True, context={'user_id': request.user.id})
+        serializer = self.serializer_class(sensors, many=True, context={'user': request.user})
         sensors = {"sensors": serializer.data}
         return Response(sensors)
 
@@ -32,5 +32,5 @@ class SensorDetailView(GenericAPIView):
         """Retrieves sensor by id for given user"""
         available_sensors = get_available_sensor_ids(request.user)
         sensor = get_object_or_404(Sensor, pk=sensor_id, id__in=available_sensors, device__status=Device.Status.APPROVED)
-        serializer = self.serializer_class(sensor, context={'user_id': request.user.id})
+        serializer = self.serializer_class(sensor, context={'user': request.user})
         return Response(serializer.data)

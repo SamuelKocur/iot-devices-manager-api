@@ -49,10 +49,10 @@ class SensorDetailSerializer(serializers.ModelSerializer):
         )
 
     def get_is_favorite(self, obj):
-        user_id = self.context.get("user_id")
-        if user_id:
+        user = self.context.get("user")
+        if user:
             try:
-                FavoriteSensor.objects.get(user_id=user_id, sensor_id=obj.id)
+                FavoriteSensor.objects.get(user=user, sensor_id=obj.id)
             except FavoriteSensor.DoesNotExist:
                 return False
 
@@ -66,8 +66,8 @@ class SensorDetailSerializer(serializers.ModelSerializer):
         return obj.type
 
     def get_custom_name(self, obj):
-        user_id = self.context.get("user_id")
-        custom_names = obj.user_names.filter(user__id=user_id)
+        user = self.context.get("user")
+        custom_names = obj.user_names.filter(user=user)
         if len(custom_names) == 0:
             return self.get_name(obj)
 

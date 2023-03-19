@@ -18,7 +18,7 @@ class FavoriteSensorsListView(GenericAPIView):
         favorite_sensors = user.favorite_sensors.all()
         available_sensors = get_available_sensor_ids(request.user)
         sensors = [favorite_sensor.sensor for favorite_sensor in favorite_sensors if favorite_sensor.sensor.id in available_sensors]
-        serializer = self.serializer_class(sensors, many=True, context={'user_id': request.user.id})
+        serializer = self.serializer_class(sensors, many=True, context={'user': request.user})
         sensors = {"sensors": serializer.data}
         return Response(sensors)
 

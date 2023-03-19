@@ -22,16 +22,17 @@ class LocationSerializer(serializers.Serializer):
         return obj.building + obj.floor + obj.room
 
     def get_custom_name(self, obj):
-        user_id = self.context.get("user_id")
-        custom_names = UserLocationName.objects.filter(user__id=user_id, location_id=obj.id)
+        user = self.context.get("user")
+        custom_names = UserLocationName.objects.filter(user=user, location_id=obj.id)
         if len(custom_names) == 0:
             return self.get_name(obj)
 
         return custom_names.first().name
 
     def get_number_of_devices(self, obj):
-        user_id = self.context.get("user_id")
-        available_sensors = get_available_sensor_ids(user_id)
+        user = self.context.get("user")
+        print(user)
+        available_sensors = get_available_sensor_ids(user)
         sensors = Sensor.objects.filter(id__in=available_sensors, device__location_id=obj.id)
         return sensors.count()
 

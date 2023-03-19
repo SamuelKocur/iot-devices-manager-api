@@ -14,7 +14,7 @@ class LocationListView(GenericAPIView):
         """Retrieve all locations"""
         available_locations = get_available_location_ids(request.user)
         locations = Location.objects.filter(id__in=available_locations)
-        serializer = self.serializer_class(locations, many=True, context={'user_id': request.user.id})
+        serializer = self.serializer_class(locations, many=True, context={'user': request.user})
         locations = {"locations": serializer.data}
         return Response(locations)
 
@@ -32,5 +32,5 @@ class LocationDetailView(GenericAPIView):
             'sensors': sensors,
             'location': location,
         }
-        serializer = self.serializer_class(data, context={'user_id': request.user.id})
+        serializer = self.serializer_class(data, context={'user': request.user})
         return Response(serializer.data)

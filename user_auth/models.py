@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser, Group
+from django.conf import settings
 from django.db import models
 
 from user_auth.managers import UserManager
@@ -36,3 +37,14 @@ class UserSensorGroup(models.Model):
         db_table = 'user_sensor_groups'
         verbose_name = 'User sensor group'
         verbose_name_plural = 'User sensor groups'
+
+
+class UserAppSettings(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='app_setting', primary_key=True)
+    date_format = models.CharField(max_length=30, default='d MMM y H:mm')
+    get_data_for = models.CharField(max_length=10, default='Past Week')
+    graph_animate = models.BooleanField(default=True)
+    graph_include_points = models.BooleanField(default=False)
+    graph_show_avg = models.BooleanField(default=True)
+    graph_show_min = models.BooleanField(default=False)
+    graph_show_max = models.BooleanField(default=False)

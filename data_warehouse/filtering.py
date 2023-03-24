@@ -42,8 +42,8 @@ def get_filtering_tag(date_from, date_to):
 
 def get_date_format(tag):
     if tag == FactSensorData.Tag.HOUR:
-        return 'd MMM y H:mm'
+        return 'dd-MM-yyyy H:mm'
     elif tag == FactSensorData.Tag.MONTH:
         return 'MMM y'
 
-    return 'd MMM y'
+    return 'dd-MM-yyyy'

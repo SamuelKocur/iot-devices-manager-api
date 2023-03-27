@@ -2,7 +2,7 @@ from django.utils import timezone
 from rest_framework import serializers
 
 from iot.models.iot_device import Device, Sensor, SensorData
-from iot.serializers.location import LocationSerializer
+from iot.serializers.mobile_app.location import LocationSerializer
 from iot_devices_manager.utils.serializers import ModelListSerializer
 from iot.models.user_customization import FavoriteSensor
 

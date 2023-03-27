@@ -3,7 +3,19 @@ from rest_framework import serializers
 from iot.models.iot_device import Device, Sensor, Location
 from iot_devices_manager.utils.serializers import ModelListSerializer
 
-from iot.serializers.location import LocationSerializer
+
+class LocationSerializer(serializers.Serializer):
+    id = serializers.IntegerField(required=False)
+    building = serializers.CharField()
+    floor = serializers.CharField()
+    room = serializers.CharField()
+    name = serializers.CharField(required=False)
+
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass
 
 
 class SensorSerializer(serializers.ModelSerializer):

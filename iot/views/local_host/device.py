@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView, get_object_or_404
 
 from iot.models.iot_device import Device
-from iot.serializers.device import DeviceDetailSerializer
+from iot.serializers.mqtt.device import DeviceDetailSerializer
 from iot_devices_manager.utils.permissions import LocalhostOnlyPermission
 
 

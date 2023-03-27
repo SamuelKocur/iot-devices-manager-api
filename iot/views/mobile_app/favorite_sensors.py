@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from iot_devices_manager.utils.serializers import EmptySerializer
 from iot.models.user_customization import FavoriteSensor
 from iot.models.iot_device import Sensor
-from iot.serializers.sensor import SensorDetailSerializer
+from iot.serializers.mobile_app.sensor import SensorDetailSerializer
 from iot.utils.permission_checks import get_available_sensor_ids
 
 

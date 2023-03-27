@@ -4,8 +4,8 @@ from rest_framework.generics import GenericAPIView
 from rest_framework import status
 
 from iot_devices_manager.utils.permissions import LocalhostOnlyPermission
-from iot.serializers.device import DeviceDetailSerializer
-from iot.serializers.sensor_data import SensorDataRequestSerializer
+from iot.serializers.mqtt.device import DeviceDetailSerializer
+from iot.serializers.mobile_app.sensor_data import SensorDataRequestSerializer
 
 
 class SaveIoTDataApiView(GenericAPIView):

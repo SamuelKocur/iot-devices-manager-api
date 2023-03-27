@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.generics import GenericAPIView, get_object_or_404
 
 from iot.models.iot_device import Device, Sensor
-from iot.serializers.sensor import SensorDetailSerializer
+from iot.serializers.mobile_app.sensor import SensorDetailSerializer
 from iot.utils.permission_checks import get_available_sensor_ids
 
 

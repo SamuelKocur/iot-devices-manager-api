@@ -17,7 +17,7 @@ class DeviceAdmin(ImportExportModelAdmin, admin.ModelAdmin, ExportCsvMixin):
     model = Device
     ordering = ('-date_created',)
     inlines = (SensorInlineAdmin, )
-    list_display = ('mac', 'name', 'status', 'location', 'date_created')
+    list_display = ('id', 'mac', 'name', 'status', 'location', 'date_created')
     list_filter = (('date_created', DateRangeFilter), 'status', 'location')
     search_fields = ('mac', 'name', 'location',)
     readonly_fields = ('date_created', 'date_updated')

@@ -15,6 +15,9 @@ class LocationSerializer(serializers.Serializer):
     image = serializers.ImageField(required=False)
     number_of_devices = serializers.SerializerMethodField()
 
+    class Meta:
+        ref_name = "Location"
+
     def get_name(self, obj):
         if obj.name:
             return obj.name

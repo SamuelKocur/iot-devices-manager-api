@@ -11,6 +11,9 @@ class LocationSerializer(serializers.Serializer):
     room = serializers.CharField()
     name = serializers.CharField(required=False)
 
+    class Meta:
+        ref_name = "NewDeviceLocation"
+
     def update(self, instance, validated_data):
         pass
 

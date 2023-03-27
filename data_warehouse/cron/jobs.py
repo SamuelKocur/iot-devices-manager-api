@@ -7,7 +7,7 @@ logger = logging.getLogger(__name__)
 
 def call_recalculation_endpoint():
     import requests
-    url = f'{LOOKBACK_URL}api/data-warehouse/recalculate-collected-data/'
+    url = f'{LOOKBACK_URL}api/data/recalculate-last-hour/'
     response = requests.get(url)
     if response.status_code == 200:
         logger.info('Successfully called recalculation endpoint')

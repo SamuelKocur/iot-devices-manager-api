@@ -11,8 +11,8 @@ urlpatterns = [
     path('logout-all/', knox_views.LogoutAllView.as_view(), name="logout-from-all-devices"),
 
     path('change-password/', profile_update_views.ChangePasswordApiView.as_view(), name="change-password"),
-    path('update-profile/', profile_update_views.UpdateUserProfileApiView.as_view(), name="update-profile"),
-    path('customize-settings/', profile_update_views.UserAppSettingsView.as_view(), name="customize_user_app_settings"),
+    path('profile/', profile_update_views.UpdateUserProfileApiView.as_view(), name="update-profile"),
+    path('app-settings/', profile_update_views.UserAppSettingsView.as_view(), name="customize_user_app_settings"),
 
     path('delete-account/', auth_views.DeleteUserApiView.as_view(), name="update-profile"),
 

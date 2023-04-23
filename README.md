@@ -14,7 +14,7 @@ Set up a python virtual environment.
 Run the following command:
 ```
 $ pip install -r requirements.txt
-$ python manage.py makemigrations
+$ python manage.py makemigrations OR python manage.py makemigrations user_auth iot data_warehouse
 $ python manage.py migrate
 $ python manage.py runserver
 ```
